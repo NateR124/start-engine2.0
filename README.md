@@ -25,4 +25,7 @@ Parting thoughts:
 
 My first submission was what I could teach myself in two days, from having only used pre ES6 Javascript and notepad++ prior.
 
-What you see now is how I've improved with my spare hours over the past couple of months. I've built a few more redux apps, as well as worked with Angular, NGRX, Node and VS Code for our current work project. Overall I see myself as likely having a few more weak spots to iron out, but I feel confident I can continue quickly improving myself with various online resources and communities I've found.
+What you see now is how I've improved with my spare hours over the past couple of months. I've built a few more redux apps, as well as worked with Angular, NGRX, Node and VS Code for our current work project. I think there are a lot of things I could have improved, but hopefully this is good proof that I can continue to improve on my own, and will do so even more rapidly were it to become my full time job.
+
+Thanks so much and excited to hear back!
+-Nate Reynolds
