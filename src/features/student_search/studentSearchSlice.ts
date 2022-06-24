@@ -3,11 +3,12 @@ import { RootState } from '../../app/store';
 import { fetchStudentData } from './studentSearchAPI';
 import { createSelector } from 'reselect'
 
+/* ---Constants--- */
 const DEFAULT_NONE_CLASS = 'All';
 const NULL_STUDENTS ={
   byId: { 
     "0": {
-      "createdAt": new Date("2021-11-02T02:19:26.694Z"),
+      "createdAt": "2021-11-02T02:19:26.694Z",
       "firstName": "N/A",
       "avatar": "N/A",
       "email": "N/A",
@@ -25,8 +26,9 @@ const NULL_STUDENTS ={
   ids: ["0"]
 };
 
+/* ---Data Interfaces--- */
 export interface Student {
-  createdAt: Date;
+  createdAt: string;
   firstName: string;
   avatar: string;
   email: string;
@@ -57,6 +59,7 @@ export interface StudentSearchState {
   status: 'idle' | 'loading' | 'failed' ;
 }
 
+/* ---Initial State--- */
 const initialState: StudentSearchState = {
   searchString: '',
   selectedClass: DEFAULT_NONE_CLASS,
@@ -64,7 +67,7 @@ const initialState: StudentSearchState = {
   status: 'idle',
 };
 
-//Async Thunk
+/* ---Async Thunk--- */
 export const studentDataAsync = createAsyncThunk(
   'studentSearch/fetchStudentData',
   async () => {
@@ -73,6 +76,7 @@ export const studentDataAsync = createAsyncThunk(
   }
 );
 
+/* ---Slice/Reducers--- */
 export const studentSearchSlice = createSlice({
   name: 'studentSearch',
   initialState,
@@ -101,6 +105,7 @@ export const studentSearchSlice = createSlice({
   },
 });
 
+/* ---Actions--- */
 export const { searchUpdated, classUpdated } = studentSearchSlice.actions;
 
 /* ---State selectors--- */
@@ -110,40 +115,59 @@ export const selectStudentData = (state: RootState) => state.studentSearch.stude
 export const selectAsyncStatus = (state: RootState) => state.studentSearch.status;
 
 /* ---Derived Selectors--- */
-export const selectFilteredStudentIds = createSelector([selectSearchString,selectSelectedClass,selectStudentData,selectAsyncStatus], (search,selectedClass,students,status) => {
-  let filteredIds: string[] = [];
-  if(search === "" && selectedClass === DEFAULT_NONE_CLASS || status!=='idle')
-    return students.ids;
-  students.ids.forEach(id => {
-    const student = students.byId[id];
-    if(student) {
-      if((search===""||student.firstName.toLowerCase().startsWith(search.toLowerCase()))
-        &&(selectedClass===DEFAULT_NONE_CLASS||student.classes.includes(selectedClass))) { 
-        filteredIds.push(student.id);
+export const selectSearchFilteredStudentIds = createSelector(
+  [selectSearchString,selectSelectedClass,selectStudentData,selectAsyncStatus], 
+  (search,selectedClass,students,status) => {
+    let filteredIds: string[] = [];
+    if(search === "" && selectedClass === DEFAULT_NONE_CLASS || status!=='idle')
+      return students.ids;
+    students.ids.forEach(id => {
+      const student = students.byId[id];
+      if(student) {
+        if((search===""||student.firstName.toLowerCase().startsWith(search.toLowerCase()))) { 
+          filteredIds.push(student.id);
+        }
       }
-    }
-  });
-  return filteredIds;
+    });
+    return filteredIds;
 });
-export const selectFilteredClasses = createSelector([selectSelectedClass,selectStudentData,selectFilteredStudentIds,selectAsyncStatus],(selectedClass,students,studentIds,status) => {
-  const valid_classes: StudentClasses = {};
-  valid_classes[DEFAULT_NONE_CLASS]=selectFilteredStudentIds.length;
-  if(status==='idle')
-  {
-    for(const id in students.byId) {
-      if(id in studentIds) {
-        students.byId[id].classes.forEach(student_class => {
-          if(student_class in valid_classes=== false)
-            valid_classes[student_class]=1;
-          else
-            valid_classes[student_class]++;
-        });
+export const selectFilteredStudentIds = createSelector(
+  [selectSearchFilteredStudentIds,selectSelectedClass,selectStudentData,selectAsyncStatus], 
+  (studentIds,selectedClass,students,status) => {
+    let filteredIds: string[] = [];
+    if(selectedClass === DEFAULT_NONE_CLASS || status!=='idle')
+      return studentIds;
+    studentIds.forEach(id => {
+      const student = students.byId[id];
+      if(student) {
+        if(selectedClass===DEFAULT_NONE_CLASS||student.classes.includes(selectedClass))
+          filteredIds.push(student.id);
       }
+    });
+    return filteredIds;
+});
+
+export const selectFilteredClasses = createSelector(
+  [selectSelectedClass,selectStudentData,selectSearchFilteredStudentIds,selectAsyncStatus],
+  (selectedClass,students,studentIds,status) => {
+    const valid_classes: StudentClasses = {};
+    valid_classes[DEFAULT_NONE_CLASS] = studentIds.length;
+    if(status==='idle')
+    {
+      for(const id in students.byId) {
+        if(studentIds.includes(id)) {
+          students.byId[id].classes.forEach(student_class => {
+            if(student_class in valid_classes=== false)
+              valid_classes[student_class]=1;
+            else
+              valid_classes[student_class]++;
+          });
+        }
+      }
+      if(selectedClass in valid_classes === false)
+        valid_classes[selectedClass]=0;
     }
-    if(selectedClass in valid_classes === false)
-      valid_classes[selectedClass]=0;
-  }
-  return valid_classes;
+    return valid_classes;
 });
 
 export default studentSearchSlice.reducer;

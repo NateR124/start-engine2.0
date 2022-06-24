@@ -1,3 +1,5 @@
+import styles from './StudentSearch.module.css';
+
 import { useEffect } from "react";
 import { useAppSelector, useAppDispatch } from '../../app/hooks';
 import {
@@ -12,7 +14,6 @@ import {
   Student
 } from './studentSearchSlice';
 
-//import styles from './StudentSearch.module.css';
 
 export function StudentSearch() { 
   const dispatch = useAppDispatch();
@@ -24,58 +25,48 @@ export function StudentSearch() {
   const selected_class = useAppSelector(selectSelectedClass);
   const valid_classes =  useAppSelector(selectFilteredClasses);
   return (
-    <div>
-      <div /*className={styles.header}*/>
-        <div /*className={styles.searchBar}*/>
-          <input 
-            type="text"
-            onChange={(e) => {dispatch(searchUpdated(e.target.value))}}
-            value={search_string}
-          />
-        </div>
-        <div /*className={styles.classSelection}*/>
-          <select
-            id="classes"
-            onChange={(e) => {dispatch(classUpdated(e.target.value))}}
-            value={selected_class}
-          >
-            {Object.keys(valid_classes).map((sclass) => (
-              <option value={sclass}> {sclass} ( {valid_classes[sclass]} ) </option>
-            ))}
-          </select>          
+    <div className={styles.gridcontainer}>
+      <div className={styles.header}>
+        <div className={styles.header_flex}>
+          <div className={styles.searchBar_container}>
+            <input
+              className={styles.searchBar} 
+              type="text"
+              onChange={(e) => {dispatch(searchUpdated(e.target.value))}}
+              value={search_string}
+            />
           </div>
-      </div>
-      <div /*className={styles.body}*/>
-        <div /*className={styles.studentList}*/ >
-          {studentIds.map((studentId) => (
-            <StudentTileSimple student={students.byId[studentId]}/>
-          ))}
+          <div className={styles.classSelector_container}>
+            <select
+                className={styles.classSelector}
+                onChange={(e) => {dispatch(classUpdated(e.target.value))}}
+                value={selected_class}
+              >
+                {Object.keys(valid_classes).map((sclass) => (
+                  <option value={sclass}> {sclass} <span>( {valid_classes[sclass]} )</span> </option>
+                ))}
+            </select>       
+          </div>
         </div>
-      </div>    
+      </div>
+      <div className={styles.main}>
+        <div className={styles.studentList} >
+            {studentIds.map((studentId) => (
+              <StudentTileSimple student={students.byId[studentId]}/>
+            ))}
+        </div>   
+      </div>
+      <div className={styles.right}>
+            
+      </div>  
     </div>
   );
 }
 
-//Hm what do we wanna include
-//Pic
-//LN, FN
-//Classes
-//City
-//Skill
-//Grades
-//Email
-
 const StudentTileSimple = ({student}: {student: Student}) => {
   return (
     <div /*className={styles.studentTile}*/>
-      <div /*className={styles.studentTile.photoPanel}*/>
-        <img src={student.pic} /*className={styles.studentTile.pic}*/></img>
-      </div>
-      <div /*className={styles.studentTile.infoPanel}*/>
-        <div /*className={styles.studentTile.name}*/>
-          <span>{student.lastName}, {student.firstName}</span>
-        </div>
-      </div>
+      <span>{student.firstName} {student.lastName}</span><span /*className={styles.studentTile.classList}*/>{student.classes.map((sclass,index,array) => index<array.length-1 ? sclass+", ": sclass)}</span>
     </div>
   );
 }

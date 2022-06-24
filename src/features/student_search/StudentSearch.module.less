@@ -1,0 +1,109 @@
+ /* Colors */
+@white: #ffffff;
+@light-navy: #eff1f6;
+@medium-navy: #9caac0;
+@navy: #162d54;
+@lightest-grey: #f5f5f5;
+@light-grey: #ddd;
+@mid-grey: #bbb;
+@slate-grey: #9b9b9b;
+@space-grey: #4a4a4a;
+@red-orange: #fc6635;
+@teal: #00cba5;
+@black: #000000;
+
+// Styles
+body {
+  font: 20px 'Ropa Sans', sans-serif;
+  line-height: 20px;
+  letter-spacing: .5px;
+  font-weight: bold;
+  background-color: @white;
+}
+
+body::-webkit-scrollbar {
+  display: none;
+  /* for Chrome, Safari, and Opera */
+}
+
+.header {
+  grid-area: header;
+  // margin: 15px 0;
+  // font-size: 36px;
+  // line-height: 46px;
+  background-color: @navy;
+}
+.header_flex {
+  display: flex;
+  height:40px;
+  flex-wrap: nowrap;
+}
+.searchBar_container{
+  // padding: 24px;
+  // margin: 12px;
+  // height: 20px;
+}
+.searchBar{
+  border: 0px;
+  width: 340px;
+  height: 20px;
+  border: 3px solid @white;
+  font: 24px 'Ropa Sans', sans-serif;
+  letter-spacing: .5px;
+
+  &:focus {
+    border-bottom: 2px solid @teal;
+    outline: none;
+  }
+
+  &::placeholder {
+    color: @light-grey;
+    opacity: 1;
+    /* For Firefox! */
+}
+}
+
+.classSelector_container{
+  // padding: 24px;
+  // margin: 12px;
+  // height: 20px;
+}
+.classSelector{
+  border: 0px;
+  height: 20px;
+  border: 3px solid @white;
+  font: 24px 'Ropa Sans', sans-serif;
+  letter-spacing: .5px;
+}
+.main {
+  grid-area: main;
+}
+
+.list {
+  -ms-overflow-style: none;
+  /* for Internet Explorer, Edge */
+  scrollbar-width: none;
+  /* for Firefox */
+  overflow-y: scroll;
+  padding-bottom: 100px;
+  /*TODO: Would've liked to get the scroll-snap behavior to work more cleanly*/
+  scroll-snap-type: y mandatory;
+  scroll-snap-stop: always;
+
+  /* &::-webkit-scrollbar { */
+      /* display: none; */
+      /* for Chrome */
+  /* } */
+}
+.right {
+  grid-area: right;
+}
+
+.gridcontainer {
+  display: grid;
+  grid-template-areas:
+    'header header header header header'
+    'main main right right right';
+  // gap: 5px;
+  // padding: 5px;
+}

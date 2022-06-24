@@ -1,4 +1,3 @@
-import React from 'react';
 import { StudentSearch } from './features/student_search/StudentSearch';
 import './App.css';
 
