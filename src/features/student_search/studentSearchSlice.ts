@@ -2,6 +2,7 @@ import { createAsyncThunk, createSlice, PayloadAction } from '@reduxjs/toolkit';
 import { RootState } from '../../app/store';
 import { fetchStudentData } from './studentSearchAPI';
 import { createSelector } from 'reselect'
+import { api_data } from "./assets/testApiData";
 
 /* ---Constants--- */
 const DEFAULT_NONE_CLASS = 'All';
@@ -25,6 +26,14 @@ const NULL_STUDENTS ={
   },
   ids: ["0"]
 };
+let TEST_STUDENT_DATA = { 
+  byId: api_data.reduce((byId:{[id: string]: Student }, student) => {
+    byId[student.id] = student;
+    return byId;
+  }, {}),
+  ids: ["0"]
+  };
+TEST_STUDENT_DATA.ids= Object.keys(TEST_STUDENT_DATA.byId);
 
 /* ---Data Interfaces--- */
 export interface Student {
@@ -42,20 +51,18 @@ export interface Student {
   pic: string;
   skill: string;
 }
-
 export interface StudentClasses { 
   [className: string]: number; 
 }
-
 export interface NormalizedObjects<O> {
   byId: {[id: string]: O };
   ids: string[];
 }
-
 export interface StudentSearchState {
   searchString: string;
   selectedClass: string;
   students: NormalizedObjects<Student>;
+  toggleLocal: boolean;
   status: 'idle' | 'loading' | 'failed' ;
 }
 
@@ -64,6 +71,7 @@ const initialState: StudentSearchState = {
   searchString: '',
   selectedClass: DEFAULT_NONE_CLASS,
   students: NULL_STUDENTS,
+  toggleLocal: false,
   status: 'idle',
 };
 
@@ -82,7 +90,10 @@ export const studentSearchSlice = createSlice({
   initialState,
   reducers: {
     searchUpdated: (state, action: PayloadAction<string>) => { state.searchString = action.payload; },
-    classUpdated: (state, action: PayloadAction<string>) => { state.selectedClass = action.payload; }
+    classUpdated: (state, action: PayloadAction<string>) => { state.selectedClass = action.payload; },
+    studentDataToggled: (state, action: PayloadAction<boolean>) => { 
+      state.toggleLocal = action.payload;
+    },
   },
   extraReducers: (builder) => {
     builder
@@ -106,15 +117,25 @@ export const studentSearchSlice = createSlice({
 });
 
 /* ---Actions--- */
-export const { searchUpdated, classUpdated } = studentSearchSlice.actions;
+export const { searchUpdated, classUpdated, studentDataToggled } = studentSearchSlice.actions;
 
 /* ---State selectors--- */
 export const selectSearchString = (state: RootState) => state.studentSearch.searchString;
 export const selectSelectedClass = (state: RootState) => state.studentSearch.selectedClass;
-export const selectStudentData = (state: RootState) => state.studentSearch.students;
+export const selectStudentAPIData = (state: RootState) => state.studentSearch.students;
 export const selectAsyncStatus = (state: RootState) => state.studentSearch.status;
+export const selectToggleLocal = (state: RootState) => state.studentSearch.toggleLocal;
 
 /* ---Derived Selectors--- */
+
+/*Note: this function only exists to allow for toggling between my local data set and the one from the API
+It normally would not exists in the application */
+export const selectStudentData = createSelector(
+  [selectStudentAPIData,selectToggleLocal],
+  (students,toggle) => {
+    return toggle ? TEST_STUDENT_DATA : students
+});
+
 export const selectSearchFilteredStudentIds = createSelector(
   [selectSearchString,selectSelectedClass,selectStudentData,selectAsyncStatus], 
   (search,selectedClass,students,status) => {
@@ -146,7 +167,6 @@ export const selectFilteredStudentIds = createSelector(
     });
     return filteredIds;
 });
-
 export const selectFilteredClasses = createSelector(
   [selectSelectedClass,selectStudentData,selectSearchFilteredStudentIds,selectAsyncStatus],
   (selectedClass,students,studentIds,status) => {
@@ -169,5 +189,7 @@ export const selectFilteredClasses = createSelector(
     }
     return valid_classes;
 });
+
+
 
 export default studentSearchSlice.reducer;
