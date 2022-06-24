@@ -15,6 +15,7 @@
 // Styles
 body {
   font: 20px 'Ropa Sans', sans-serif;
+  margin: 0px;
   line-height: 20px;
   letter-spacing: .5px;
   font-weight: bold;
@@ -26,60 +27,131 @@ body::-webkit-scrollbar {
   /* for Chrome, Safari, and Opera */
 }
 
-.header {
-  grid-area: header;
-  // margin: 15px 0;
-  // font-size: 36px;
-  // line-height: 46px;
-  background-color: @navy;
-}
-.header_flex {
-  display: flex;
-  height:40px;
-  flex-wrap: nowrap;
-}
-.searchBar_container{
-  // padding: 24px;
-  // margin: 12px;
-  // height: 20px;
-}
-.searchBar{
-  border: 0px;
-  width: 340px;
-  height: 20px;
-  border: 3px solid @white;
-  font: 24px 'Ropa Sans', sans-serif;
-  letter-spacing: .5px;
 
-  &:focus {
-    border-bottom: 2px solid @teal;
-    outline: none;
+/* ---Header Sizes--- */
+@Header-classSelectWidth: 460px - @Header-searchWidth;
+@Header-classSelectHeight: @Header-searchHeight;
+
+@Header-verticalMargin: 14px;
+@Header-horizontalMargin: 28px;
+@Header-height: @Header-verticalMargin * 2 + @Header-searchHeight;
+
+.header {
+  position: fixed;
+  width:100%;
+  top:0px;
+  height: @Header-height;
+  background-color: @navy;
+  &_flex{
+    display: flex;
+    margin: @Header-verticalMargin @Header-horizontalMargin;
+    flex-wrap: nowrap;
+  }
+}
+
+/* ---Header Settings--- */
+@Header-searchHeight: 26px;
+@Header-searchWidth: 340px;
+@Header-searchBorder: 3px;
+@Header-searchIconSize: 18px;
+
+
+.searchBar{
+  display: flex;
+  flex-wrap: nowrap;
+  // height: @Header-searchHeight - @Header-searchBorder * 2;
+  width: @Header-searchWidth + @Header-searchIconSize + 14px;
+  background-color: @white;
+  border-radius: 5px 0px 0px 5px;
+  border: 0px; 
+  
+  .searchIcon{
+    margin: 3px;
+    color: @slate-grey;
+    width: @Header-searchIconSize;
+    height: @Header-searchIconSize;
+  }
+  .searchBarInput
+  {
+    width: @Header-searchWidth;
+    height: @Header-searchHeight - @Header-searchBorder*2;
+    border: @Header-searchBorder solid @white;
+    letter-spacing: .5px;
+    padding: 0px;
+    &:focus {
+      outline: none;
+    }
+    &::placeholder {
+      color: @slate-grey;
+      opacity: 1;
+      /* For Firefox! */
+    }
   }
 
-  &::placeholder {
-    color: @light-grey;
-    opacity: 1;
-    /* For Firefox! */
-}
+
+
 }
 
-.classSelector_container{
-  // padding: 24px;
-  // margin: 12px;
-  // height: 20px;
-}
 .classSelector{
   border: 0px;
-  height: 20px;
-  border: 3px solid @white;
-  font: 24px 'Ropa Sans', sans-serif;
+  border-radius: 0px 5px 5px 0px;
+  width: @Header-classSelectWidth;
+  height: @Header-classSelectHeight;
   letter-spacing: .5px;
-}
-.main {
-  grid-area: main;
+  &:focus {
+    outline: none;
+  }
+  &_container{
+    // padding: 24px;
+    // margin: 12px;
+    // height: 20px;
+  }
 }
 
-.list {
+.main {
+  margin-top: @Header-height+14px;
+}
+
+/* ---Student div settings ---*/
+@studentTile-classWidth: 240px;
+@studentTile-nameWidth: 240px;
+@studentTile-verticalMargin: 14px;
+@studentTile-horizontalMargin: 28px;
+.studentList {
+  display: table;
+  margin: @studentTile-verticalMargin @studentTile-horizontalMargin;
+  // overflow-y: scroll;
+  // margin:14px;
+  // height:500px;
+  .studentTile
+  {
+    transition: ease height .2s; 
+    display: table-row;
+    height: 30px;
+    &:hover {
+      background-color: @light-navy;
+    }
+    .studentName{    
+      vertical-align: middle;
+      display: table-cell;
+      width: @studentTile-nameWidth;
+      // border-bottom: 1px solid @mid-grey;
+    }
+    .studentClassList{
+        vertical-align: middle;
+        display: table-cell;
+        font: 14px 'Ropa Sans', sans-serif;
+        width: @studentTile-classWidth;
+        color:  @slate-grey;
+        // border-bottom: 1px solid @mid-grey;
+    }
+  }
+  .studentTileHidden{
+    transition: ease height .2s; ;
+    height: 0px;
+    border: none;
+    overflow: hidden;
+  }
   -ms-overflow-style: none;
   /* for Internet Explorer, Edge */
   scrollbar-width: none;
@@ -94,16 +166,4 @@ body::-webkit-scrollbar {
       /* display: none; */
       /* for Chrome */
   /* } */
-}
-.right {
-  grid-area: right;
-}
-
-.gridcontainer {
-  display: grid;
-  grid-template-areas:
-    'header header header header header'
-    'main main right right right';
-  // gap: 5px;
-  // padding: 5px;
 }

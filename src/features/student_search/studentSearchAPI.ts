@@ -1,5 +1,5 @@
 import { Student } from "./studentSearchSlice";
-import { api_data } from "./testApiData";
+import { api_data } from "./assets/testApiData";
 
 const STUDENT_API_URL= "https://6181949532c9e2001780488b.mockapi.io/students";
 const test_data = true;
@@ -19,3 +19,8 @@ export function fetchStudentData() {
       });
   }
 };
+
+export function fetchTestData() {
+  return new Promise<Student[]>((resolve) =>
+  setTimeout(() => resolve(api_data), 500));
+}

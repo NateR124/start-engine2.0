@@ -9,15 +9,15 @@ const NULL_STUDENTS ={
   byId: { 
     "0": {
       "createdAt": "2021-11-02T02:19:26.694Z",
-      "firstName": "N/A",
+      "firstName": "",
       "avatar": "N/A",
       "email": "N/A",
-      "lastName":"N/A",
+      "lastName":"",
       "test":"N/A",
       "city":"N/A",
       "company":"N/A",
       "grades":["0","0","0","0","0","0","0","0"],
-      "classes":["N/A","N/A"],
+      "classes":[""],
       "id":"0",
       "pic":"N/A",
       "skill":"N/A"
