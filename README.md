@@ -26,7 +26,7 @@ Hello (again) Start Engine! Here's my (re)submission of the interview code. As t
 - RTK Query looked interesting, as opposed to using Thunks
 - Use the extra time to set up tests with Jest
 
-##Parting thoughts:
+## Parting thoughts:
 
 My first submission was what I could teach myself in two days, from having only used pre ES6 Javascript and notepad++ prior.
 
