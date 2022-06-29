@@ -1,3 +1,7 @@
+## Running the build
+"Npm install" -> "Npm Run Start"
+View the app on StackBlitz (Click to install dependencies when first opening): https://stackblitz.com/github/NateR124/start-engine2.0?file=README.md
+
 ## StartEngine Interview App: Take 2
 Hello (again) Start Engine! Here's my (re)submission of the interview code. As the role I'm applying for is a bit less senior, I figure the best way to contexualize my submission is in two parts:
 
