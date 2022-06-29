@@ -6,7 +6,7 @@ View the app on StackBlitz (Click to install dependencies when first opening): h
 ## StartEngine Interview App: Take 2
 Hello (again) Start Engine! Here's my (re)submission of the interview code. As the role I'm applying for is a bit less senior, I figure the best way to contexualize my submission is in two parts:
 
-1) What have I learned in the past few months, that can be seen in this submission:
+### What have I learned in the past few months, that can be seen in this submission:
 
 - Utilizing the "createSlice()" Redux interface, with formatting inspiration from "create-react-app  --template redux-typescript"
 - Taking time to read through the RTK and Redux style recommendation guides, implement them throughout
@@ -17,7 +17,7 @@ Hello (again) Start Engine! Here's my (re)submission of the interview code. As t
 - ES6 Javascript
 - Async calls, normalizing JSON data, and Promises
 
-2) What things will I be taking the time to teach myself over the coming weeks/months:
+### What things will I be taking the time to teach myself over the coming weeks/months:
 
 - Beginning to understand the time/benefit trade offs of the various tools/concepts involved
 - I'd like to discover more existing 3rd party libraries or tools to save myself from writing things from scratch (ex: Normalizr, Kendo Grid, etc.)
